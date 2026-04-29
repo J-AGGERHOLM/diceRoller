@@ -1,0 +1,24 @@
+.page {
+  background-color: #1a1a2e;
+  min-height: 100vh;
+  color: white;
+  font-family: sans-serif;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  padding: 16px;
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.right-col {
+  display: flex;
+  flex-direction: column;
+}
