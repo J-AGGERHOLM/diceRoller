@@ -6,10 +6,11 @@
   import Welcome from "./pages/welcome.svelte";
   import DicePage from "./pages/dicePage.svelte";
   import Admin from "./pages/admin.svelte";
+  import Navbar from "./components/Navbar/Navbar.svelte";
   import { fetchGet } from "./util/fetchUtil";
   import toastr from "toastr";
   
-  async function logOut () {
+  export async function logOut () {
     try {
       const result = await fetchGet("/auth/logout");
       if ( result.ok ) {
@@ -26,14 +27,8 @@
 </script>
 
 <Router>
-  <nav>
-    <Link to = "/">Log-in</Link>  
-    <Link to = "/welcome">Welcome</Link>  
-    <Link to = "/dicePage">Dice Page</Link>
-    <Link to = "/admin">Admin</Link>  
-    <Link to = "/" on:click = {logOut}>Log-out</Link>
-  </nav>
-
+  <Navbar onLogOut = {logOut}></Navbar>
+  
   <div>
     <Route path="/"><LogInPage/></Route>
     <Route path="/welcome"><Welcome /></Route>

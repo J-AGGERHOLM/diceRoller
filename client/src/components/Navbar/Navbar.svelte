@@ -1,17 +1,27 @@
 <script>
   // button handlers can be wired up later
-  import logo from "../../assets/Icon.png"
+  import logo from "../../assets/Icon.png";
+  import { Link } from "svelte-routing";
+
+  export let onLogOut;
 </script>
 
 <nav class="navbar">
   <div class="brand">
     <img src="{logo}" alt="logo" class="logo">
     <div class="brand-text">
-      <span class="brand-name">DiceForge</span>
+      <span class="brand-name">ReRoll</span>
       <span class="brand-sub">3D Dice Roller & Character Manager</span>
     </div>
   </div>
   <div class="actions">
+    
+    <Link to = "/">Log-in</Link>  
+    <Link to = "/welcome">Welcome</Link>  
+    <Link to = "/dicePage">Dice Page</Link>
+    <Link to = "/admin">Admin</Link>  
+    <Link to = "/" on:click = {onLogOut}>Log-out</Link>
+  
     <button class="btn green">Save</button>
     <button class="btn purple">Dice Style</button>
     <button class="btn red">Sign Out</button>
@@ -31,7 +41,7 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 1rem;
   }
 
   .logo {
@@ -39,15 +49,20 @@
     height: auto;
   }
 
+  .brand-text{
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
+
   .brand-name {
-    display: block;
     font-size: 3rem;
     font-weight: bold;
-    padding-bottom: 10%;
+    font-family: 'Cinzel', serif;
+    line-height: 1;
   }
 
   .brand-sub {
-    display: block;
     font-size: 0.75rem;
     color: #888;
   }

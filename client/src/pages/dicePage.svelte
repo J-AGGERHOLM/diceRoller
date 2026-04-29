@@ -8,7 +8,6 @@
 </script>
 
 <div class="page">
-<Navbar></Navbar>
 <main class="layout">
     <div class="left-col">
         <DiceViewer></DiceViewer>
