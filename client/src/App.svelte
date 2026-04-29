@@ -4,6 +4,7 @@
 
   import LogInPage from "./pages/logInPage.svelte";
   import Welcome from "./pages/welcome.svelte";
+  import DicePage from "./pages/dicePage.svelte";
   import Admin from "./pages/admin.svelte";
   import { fetchGet } from "./util/fetchUtil";
   import toastr from "toastr";
@@ -28,6 +29,7 @@
   <nav>
     <Link to = "/">Log-in</Link>  
     <Link to = "/welcome">Welcome</Link>  
+    <Link to = "/dicePage">Dice Page</Link>
     <Link to = "/admin">Admin</Link>  
     <Link to = "/" on:click = {logOut}>Log-out</Link>
   </nav>
@@ -35,6 +37,7 @@
   <div>
     <Route path="/"><LogInPage/></Route>
     <Route path="/welcome"><Welcome /></Route>
+    <Route path="/dicePage"><DicePage></DicePage></Route>
     <Route path="/admin"><Admin /></Route>
   </div>
 </Router>
