@@ -7,7 +7,7 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 25vw;
   gap: 16px;
   padding: 16px;
 }
