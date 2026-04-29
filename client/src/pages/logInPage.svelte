@@ -8,7 +8,7 @@
   <div class="login-header">
       <img class="logo" src={Logo} alt="ReRoll">
       <h1>ReRoll</h1>
-      <span> Dice Roller & Character Manager </span>
+      <span>3D Dice Roller & Character Manager </span>
   </div>
   <Login></Login>
 </div>
