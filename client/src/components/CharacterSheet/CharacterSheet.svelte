@@ -1,4 +1,6 @@
 <script>
+  import { selectedCharacter } from "../../stores/characterStore"; 
+  import { calculateModifier } from "../../util/dndCalculations.js"
   // ============== is edit mode ============== //
   let editMode = false;
 
@@ -42,39 +44,39 @@
 
   <!-- Character info fields -->
   <div class="info-grid">
-    <div class="field">
+    <div class="display">
       <label>Name</label>
       {#if editMode}
         <input type="text" bind:value={name} placeholder="Character name" />
       {:else}
-        <span class="display-value">{name || '—'}</span>
+        <span class="display-value">{$selectedCharacter?.name || '—'}</span>
       {/if}
     </div>
 
-    <div class="field">
+    <div class="display">
       <label>Class</label>
       {#if editMode}
         <select></select>
       {:else}
-        <span class="display-value">{selectedClass || '—'}</span>
+        <span class="display-value">{$selectedCharacter?.className || '—'}</span>
       {/if}
     </div>
 
-    <div class="field">
+    <div class="display">
       <label>Race</label>
       {#if editMode}
         <select>
         </select>
       {:else}
-        <span class="display-value">{selectedRace || '—'}</span>
+        <span class="display-value">{$selectedCharacter?.race || '—'}</span>
       {/if}
     </div>
 
-    <div class="field">
+    <div class="display">
       <label>Level</label>
       {#if editMode}
       {:else}
-        <span class="display-value">{level || '—'}</span>
+        <span class="display-value">{$selectedCharacter?.level || '—'}</span>
       {/if}
     </div>
   </div>
@@ -98,10 +100,10 @@
       {#if editMode}
         <input/>
       {:else}
-        <span class="ability-input-display"> --- </span>
+        <span class="ability-input-display"> {$selectedCharacter?.abilities?.[ability.key] ?? '---'} </span>
       {/if}
         <span class="racial-bonus">---</span>
-        <span class="modifier">---</span>
+        <span class="modifier">{calculateModifier($selectedCharacter?.abilities?.[ability.key] ?? '---')}</span>
     </div>
   {/each}
 
@@ -111,7 +113,7 @@
     <div class="save-row">
       <span class="proficiency-toggle"></span>
       <span class="save-name">{save.name}</span>
-      <span class="save-mod">---</span>
+      <span class="save-mod">{calculateModifier($selectedCharacter?.abilities?.[save.key]) ?? '---'}</span>
     </div>
   {/each}
 
@@ -159,7 +161,7 @@
     gap: 10px;
   }
 
-  .field label {
+  .display label {
     display: block;
     font-size: 0.75rem;
     color: #888;
@@ -168,7 +170,7 @@
     letter-spacing: 0.5px;
   }
 
-  .field input, .field select {
+  .display input, .display select {
     width: 100%;
     background-color: #1e1e3a;
     border: 1px solid #2a2a4a;

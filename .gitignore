@@ -1,1 +1,4 @@
 node_modules/
+.prettierrc.json
+.prettierignore
+settings.json
