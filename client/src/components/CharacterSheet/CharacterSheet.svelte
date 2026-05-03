@@ -1,14 +1,14 @@
 <script>
   import { character } from "../../stores/characterStore"; 
-  import { calculateModifier } from "../../util/dndCalculations.js"
+  import { calculateModifier, calculateHitpoints } from "../../util/dndCalculations.js"
   // ============== is edit mode ============== //
   let editMode = $state(false);
 
   // ============== form defaults ============== //
-  let name = "";
-  let className = "";
-  let race = "";
-  let lvl = 0
+  let name = $character.name;
+  let className = $character.className;
+  let race = $character.race;
+  let lvl = $character.level;
   let abilities = {...$character.abilities}
 
   // ============== template lists ============== //
@@ -31,32 +31,35 @@
   ];
 
   const classList = [
-  { name: 'Barbarian',  savingThrows: ['str', 'con'] },
-  { name: 'Bard',       savingThrows: ['dex', 'cha'] },
-  { name: 'Cleric',     savingThrows: ['wis', 'cha'] },
-  { name: 'Druid',      savingThrows: ['int', 'wis'] },
-  { name: 'Fighter',    savingThrows: ['str', 'con'] },
-  { name: 'Monk',       savingThrows: ['str', 'dex'] },
-  { name: 'Paladin',    savingThrows: ['wis', 'cha'] },
-  { name: 'Ranger',     savingThrows: ['str', 'dex'] },
-  { name: 'Rogue',      savingThrows: ['dex', 'int'] },
-  { name: 'Sorcerer',   savingThrows: ['con', 'cha'] },
-  { name: 'Warlock',    savingThrows: ['wis', 'cha'] },
-  { name: 'Wizard',     savingThrows: ['int', 'wis'] },
-];
+    { name: 'Barbarian',  hitDie: 12, savingThrows: ['str', 'con'] },
+    { name: 'Bard',       hitDie: 8,  savingThrows: ['dex', 'cha'] },
+    { name: 'Cleric',     hitDie: 8,  savingThrows: ['wis', 'cha'] },
+    { name: 'Druid',      hitDie: 8,  savingThrows: ['int', 'wis'] },
+    { name: 'Fighter',    hitDie: 10, savingThrows: ['str', 'con'] },
+    { name: 'Monk',       hitDie: 8,  savingThrows: ['str', 'dex'] },
+    { name: 'Paladin',    hitDie: 10, savingThrows: ['wis', 'cha'] },
+    { name: 'Ranger',     hitDie: 10, savingThrows: ['str', 'dex'] },
+    { name: 'Rogue',      hitDie: 8,  savingThrows: ['dex', 'int'] },
+    { name: 'Sorcerer',   hitDie: 6,  savingThrows: ['con', 'cha'] },
+    { name: 'Warlock',    hitDie: 8,  savingThrows: ['wis', 'cha'] },
+    { name: 'Wizard',     hitDie: 6,  savingThrows: ['int', 'wis'] },
+  ];
 
-const raceList = [
-  { name: 'Human',      bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 } },
-  { name: 'Elf',        bonuses: { dex: 2 } },
-  { name: 'Dwarf',      bonuses: { con: 2 } },
-  { name: 'Halfling',   bonuses: { dex: 2 } },
-  { name: 'Gnome',      bonuses: { int: 2 } },
-  { name: 'Half-Elf',   bonuses: { cha: 2, str: 1, dex: 1 } },
-  { name: 'Half-Orc',   bonuses: { str: 2, con: 1 } },
-  { name: 'Tiefling',   bonuses: { cha: 2, int: 1 } },
-  { name: 'Dragonborn', bonuses: { str: 2, cha: 1 } },
-];
+  const raceList = [
+    { name: 'Human',      bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 } },
+    { name: 'Elf',        bonuses: { dex: 2 } },
+    { name: 'Dwarf',      bonuses: { con: 2 } },
+    { name: 'Halfling',   bonuses: { dex: 2 } },
+    { name: 'Gnome',      bonuses: { int: 2 } },
+    { name: 'Half-Elf',   bonuses: { cha: 2, str: 1, dex: 1 } },
+    { name: 'Half-Orc',   bonuses: { str: 2, con: 1 } },
+    { name: 'Tiefling',   bonuses: { cha: 2, int: 1 } },
+    { name: 'Dragonborn', bonuses: { str: 2, cha: 1 } },
+  ];
 
+   // ============== calculated values ============== //
+  let conModifier = $state(calculateModifier($character.abilities.con))
+  let maxHitpoints = $derived(calculateHitpoints($character.className, $character.level, conModifier, classList))
 
   // ============== functions ============== //
   function saveEdits() {
@@ -139,6 +142,7 @@ const raceList = [
   <div class="stat-bar">
     <div class="stat hp">
       <span class="stat-label">HP</span>
+      <span>{maxHitpoints}</span>
     </div>
     <div class="stat ac">
       <span class="stat-label">AC</span>
