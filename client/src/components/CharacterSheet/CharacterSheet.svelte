@@ -1,14 +1,15 @@
 <script>
-  import { selectedCharacter } from "../../stores/characterStore"; 
+  import { character } from "../../stores/characterStore"; 
   import { calculateModifier } from "../../util/dndCalculations.js"
   // ============== is edit mode ============== //
-  let editMode = false;
+  let editMode = $state(false);
 
-  // ============== character defaults ============== //
-  let name = '';
-  let level = '';
-  let selectedRace = '';
-  let selectedClass = '';
+  // ============== form defaults ============== //
+  let name = "";
+  let className = "";
+  let race = "";
+  let lvl = 0
+  let abilities = {...$character.abilities}
 
   // ============== template lists ============== //
   const abilityList = [
@@ -29,6 +30,43 @@
     { key: 'cha', name: 'CHA Save' },
   ];
 
+  const classList = [
+  { name: 'Barbarian',  savingThrows: ['str', 'con'] },
+  { name: 'Bard',       savingThrows: ['dex', 'cha'] },
+  { name: 'Cleric',     savingThrows: ['wis', 'cha'] },
+  { name: 'Druid',      savingThrows: ['int', 'wis'] },
+  { name: 'Fighter',    savingThrows: ['str', 'con'] },
+  { name: 'Monk',       savingThrows: ['str', 'dex'] },
+  { name: 'Paladin',    savingThrows: ['wis', 'cha'] },
+  { name: 'Ranger',     savingThrows: ['str', 'dex'] },
+  { name: 'Rogue',      savingThrows: ['dex', 'int'] },
+  { name: 'Sorcerer',   savingThrows: ['con', 'cha'] },
+  { name: 'Warlock',    savingThrows: ['wis', 'cha'] },
+  { name: 'Wizard',     savingThrows: ['int', 'wis'] },
+];
+
+const raceList = [
+  { name: 'Human',      bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 } },
+  { name: 'Elf',        bonuses: { dex: 2 } },
+  { name: 'Dwarf',      bonuses: { con: 2 } },
+  { name: 'Halfling',   bonuses: { dex: 2 } },
+  { name: 'Gnome',      bonuses: { int: 2 } },
+  { name: 'Half-Elf',   bonuses: { cha: 2, str: 1, dex: 1 } },
+  { name: 'Half-Orc',   bonuses: { str: 2, con: 1 } },
+  { name: 'Tiefling',   bonuses: { cha: 2, int: 1 } },
+  { name: 'Dragonborn', bonuses: { str: 2, cha: 1 } },
+];
+
+
+  // ============== functions ============== //
+  function saveEdits() {
+    $character.name = name;
+    $character.className = className;
+    $character.level = lvl;
+    $character.race = race;
+    $character.abilities = abilities;
+    editMode = false;
+  }
 
 </script>
 
@@ -37,7 +75,12 @@
   <!-- Header with edit toggle -->
   <div class="sheet-header">
     <span class="sheet-title">Character Sheet</span>
-    <button class="edit-btn" on:click={() => editMode = !editMode}>
+    <button class="edit-btn" onclick={() => {
+      if(editMode){
+        saveEdits()
+      }else{
+        editMode = true
+      }}}>
       {editMode ? 'Save' : 'Edit'}
     </button>
   </div>
@@ -47,36 +90,47 @@
     <div class="display">
       <label>Name</label>
       {#if editMode}
-        <input type="text" bind:value={name} placeholder="Character name" />
+        <input type="text" bind:value={name} placeholder="Character name"  />
       {:else}
-        <span class="display-value">{$selectedCharacter?.name || '—'}</span>
+        <span class="display-value">{$character?.name || '—'}</span>
       {/if}
     </div>
 
     <div class="display">
       <label>Class</label>
       {#if editMode}
-        <select></select>
+        <select bind:value={className}>
+        <option value="" disabled>Select a class</option>
+        {#each classList as classOption }
+          <option value={classOption.name.toLocaleLowerCase()}>{classOption.name}</option>
+
+        {/each}
+        </select>
       {:else}
-        <span class="display-value">{$selectedCharacter?.className || '—'}</span>
+        <span class="display-value">{$character?.className || '—'}</span>
       {/if}
     </div>
 
     <div class="display">
       <label>Race</label>
       {#if editMode}
-        <select>
+        <select bind:value={race} >
+        <option value="" disabled>Select a race</option>
+        {#each raceList as race}
+          <option value={race.name.toLocaleLowerCase()}>{race.name}</option>
+        {/each}
         </select>
       {:else}
-        <span class="display-value">{$selectedCharacter?.race || '—'}</span>
+        <span class="display-value">{$character?.race || '—'}</span>
       {/if}
     </div>
 
     <div class="display">
       <label>Level</label>
       {#if editMode}
+      <input placeholder="LVL" bind:value={lvl}>
       {:else}
-        <span class="display-value">{$selectedCharacter?.level || '—'}</span>
+        <span class="display-value">{$character?.level || '—'}</span>
       {/if}
     </div>
   </div>
@@ -100,10 +154,10 @@
       {#if editMode}
         <input/>
       {:else}
-        <span class="ability-input-display"> {$selectedCharacter?.abilities?.[ability.key] ?? '---'} </span>
+        <span class="ability-input-display"> {$character?.abilities?.[ability.key] ?? '---'} </span>
       {/if}
         <span class="racial-bonus">---</span>
-        <span class="modifier">{calculateModifier($selectedCharacter?.abilities?.[ability.key] ?? '---')}</span>
+        <span class="modifier">{calculateModifier($character?.abilities?.[ability.key] ?? '---')}</span>
     </div>
   {/each}
 
@@ -113,7 +167,7 @@
     <div class="save-row">
       <span class="proficiency-toggle"></span>
       <span class="save-name">{save.name}</span>
-      <span class="save-mod">{calculateModifier($selectedCharacter?.abilities?.[save.key]) ?? '---'}</span>
+      <span class="save-mod">{calculateModifier($character?.abilities?.[save.key]) ?? '---'}</span>
     </div>
   {/each}
 
