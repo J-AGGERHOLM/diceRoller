@@ -1,5 +1,5 @@
-export function calculateModifier(abilityScore) {
-  return Math.floor((abilityScore - 10) / 2);
+export function calculateModifier(abilityScore, racialModifier) {
+  return Math.floor(((abilityScore - 10) + racialModifier) / 2);
 }
 
 export function calculateHitpoints(className, lvl, conModifier, classList) {

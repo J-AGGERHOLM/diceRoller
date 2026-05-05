@@ -1,10 +1,33 @@
+<script>
+  import DiceBox from "@3d-dice/dice-box"
+  
+
+  import { onMount } from "svelte";
+
+  onMount(async () => {
+    const diceBox = new DiceBox({
+      container: "#dice-box",
+      assetPath: "/assets/dice-box/",
+      scale: 14,
+      offscreen: true,
+      theme: "default",
+    });
+     await diceBox.init().then(() => {
+      const rollValue = diceBox.roll("1d20");
+      console.log(rollValue);
+     })
+  }) 
+</script>
+
 <div class="viewer">
+<div id="dice-box" class="dice-box"></div>
   <button class="roll-btn">ROLL</button>
 </div>
 
 <style>
   .viewer {
-    background-color: #0f0f1a;
+    background-color: #0f0f1a28;
+    border: 1px solid #dc26269c;    
     border-radius: 12px;
     height: 50vh;
     display: flex;
@@ -14,6 +37,19 @@
     padding-bottom: 24px;
     position: relative;
   }
+
+  .dice-box {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+:global(#dice-box canvas) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+  
 
   .roll-btn {
     background-color: #ef4444;

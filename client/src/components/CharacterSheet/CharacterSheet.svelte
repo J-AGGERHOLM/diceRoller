@@ -5,11 +5,11 @@
   let editMode = $state(false);
 
   // ============== form defaults ============== //
-  let name = $character.name;
-  let className = $character.className;
-  let race = $character.race;
-  let lvl = $character.level;
-  let abilities = {...$character.abilities}
+  let name = $state($character.name);
+  let className = $state($character.className);
+  let race = $state($character.race);
+  let level = $state($character.level);
+  let abilities = $state({...$character.abilities})
 
   // ============== template lists ============== //
   const abilityList = [
@@ -58,16 +58,13 @@
   ];
 
    // ============== calculated values ============== //
-  let conModifier = $state(calculateModifier($character.abilities.con))
+  let selectedRace = $derived(raceList.find(race => race.name.toLocaleLowerCase() === $character.race.toLocaleLowerCase()))
+  let conModifier = $derived(calculateModifier($character.abilities.con, selectedRace?.bonuses?.con ?? 0))
   let maxHitpoints = $derived(calculateHitpoints($character.className, $character.level, conModifier, classList))
 
   // ============== functions ============== //
   function saveEdits() {
-    $character.name = name;
-    $character.className = className;
-    $character.level = lvl;
-    $character.race = race;
-    $character.abilities = abilities;
+    character.set({...$character, name, className, level, race, abilities})
     editMode = false;
   }
 
@@ -105,7 +102,7 @@
         <select bind:value={className}>
         <option value="" disabled>Select a class</option>
         {#each classList as classOption }
-          <option value={classOption.name.toLocaleLowerCase()}>{classOption.name}</option>
+          <option value={classOption.name}>{classOption.name}</option>
 
         {/each}
         </select>
@@ -120,7 +117,7 @@
         <select bind:value={race} >
         <option value="" disabled>Select a race</option>
         {#each raceList as race}
-          <option value={race.name.toLocaleLowerCase()}>{race.name}</option>
+          <option value={race.name}>{race.name}</option>
         {/each}
         </select>
       {:else}
@@ -131,7 +128,7 @@
     <div class="display">
       <label>Level</label>
       {#if editMode}
-      <input placeholder="LVL" bind:value={lvl}>
+      <input placeholder="level" bind:value={level}>
       {:else}
         <span class="display-value">{$character?.level || '—'}</span>
       {/if}
@@ -156,12 +153,12 @@
       <span class="ability-name">{ability.name}</span>
 
       {#if editMode}
-        <input/>
+        <input class="ability-input-display" bind:value={abilities[ability.key]}/>
       {:else}
         <span class="ability-input-display"> {$character?.abilities?.[ability.key] ?? '---'} </span>
       {/if}
-        <span class="racial-bonus">---</span>
-        <span class="modifier">{calculateModifier($character?.abilities?.[ability.key] ?? '---')}</span>
+        <span class="racial-bonus">{selectedRace?.bonuses?.[ability.key] ?? 0}</span>
+        <span class="modifier">{calculateModifier($character?.abilities?.[ability.key], selectedRace?.bonuses?.[ability.key] ?? 0)}</span>
     </div>
   {/each}
 
@@ -171,7 +168,7 @@
     <div class="save-row">
       <span class="proficiency-toggle"></span>
       <span class="save-name">{save.name}</span>
-      <span class="save-mod">{calculateModifier($character?.abilities?.[save.key]) ?? '---'}</span>
+      <span class="save-mod">{calculateModifier($character?.abilities?.[save.key], selectedRace?.bonuses?.[save.key] ?? 0)}</span>
     </div>
   {/each}
 
@@ -303,7 +300,9 @@
   .ability-input-display {
     width: 48px;
     text-align: center;
-    font-size: 0.95rem;
+    font-size: x-large;
+    background-color: #1e1e3a;
+    border: 1px solid #2a2a4a;
     color: #ccc;
   }
 
