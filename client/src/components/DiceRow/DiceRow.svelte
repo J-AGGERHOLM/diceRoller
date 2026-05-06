@@ -26,7 +26,7 @@
 
   function displayCount(die) {
     const count = $selectedDice.filter((d) => d.label === die.label).length;
-    return count > 0 ? `x${count}` : '';
+    return count || 0;
   }
 </script>
 
@@ -59,8 +59,8 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    gap: 6px;
-    max-height: 5vh;
+    gap: 2em;
+    max-height: 8vh;
   }
 
   .label {
@@ -75,17 +75,26 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1em;
+    gap: 2em;
   }
 
   .dieLabelConnector {
     display: flex;
     flex-direction: column;
     max-width: 4em;
+    align-items: center;
   }
 
   .dieLabelConnector span {
-    padding-bottom: 0.5em;
+    width: 32px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #2a2a4a;
+    color: white;
+    margin-bottom: 6px;
   }
 
   .die {
