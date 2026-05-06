@@ -4,13 +4,14 @@
   import { selectedDice, clearDice } from '../../stores/selectedDieStore';
 
   let diceBox;
+  let resultDisplay = $state('');
 
   onMount(async () => {
     diceBox = new DiceBox({
       container: '#dice-box',
       assetPath: '/assets/dice-box/',
-      scale: 14,
-      offscreen: true,
+      scale: 10,
+      offscreen: false,
       theme: 'default',
     });
     await diceBox.init();
@@ -28,17 +29,25 @@
     return Object.entries(counts).map(([label, count]) => `${count}${label}`);
   }
 
+  function calculateResults(resultArray) {
+    const newArray = resultArray.map((result) => result.value);
+    return newArray.reduce((acc, number) => acc + number, 0);
+  }
+
   async function rollDce() {
+    resultDisplay = '';
     if ($selectedDice.length === 0) return;
 
     const counts = countDice($selectedDice);
     const parcedArray = parceForDiceBox(counts);
 
     const results = await diceBox.roll(parcedArray);
+    resultDisplay = calculateResults(results);
   }
 </script>
 
 <div class="viewer">
+  <h4 class="result-display">{resultDisplay}</h4>
   <div id="dice-box" class="dice-box"></div>
   <div class="button-row">
     <button class="roll-btn" on:click={rollDce}>ROLL</button>
@@ -111,5 +120,15 @@
   .clear-dice:hover {
     border-color: #ffffff50;
     color: #ffffff90;
+  }
+
+  .result-display {
+    position: absolute;
+    top: 200px;
+    font-family: Cinzel;
+    font-size: 4rem;
+    text-shadow:
+      2px 2px 8px rgba(0, 0, 0, 0.9),
+      0 0 20px rgba(168, 85, 247, 0.6);
   }
 </style>
