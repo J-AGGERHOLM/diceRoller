@@ -191,15 +191,21 @@
 </div>
 
 <style>
+  /* ---- Sheet container ---- */
   .sheet {
     background-color: #12122a;
     border-radius: 12px;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-size: 0.8rem;
   }
 
+  /* ---- Header ---- */
   .sheet-header {
     display: flex;
     justify-content: space-between;
@@ -208,7 +214,7 @@
 
   .sheet-title {
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: #aaa;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -219,7 +225,8 @@
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 4px 12px;
+    padding: 3px 10px;
+    font-size: 0.75rem;
     cursor: pointer;
   }
 
@@ -227,20 +234,20 @@
     background-color: #3a3a6a;
   }
 
-  /* ---- Character info ---- */
+  /* ---- Character info grid ---- */
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 6px;
   }
 
   .display label {
     display: block;
-    font-size: 0.75rem;
-    color: #888;
-    margin-bottom: 4px;
+    font-size: 0.65rem;
+    color: #666;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-bottom: 2px;
   }
 
   .display input,
@@ -248,31 +255,31 @@
     width: 100%;
     background-color: #1e1e3a;
     border: 1px solid #2a2a4a;
-    border-radius: 6px;
+    border-radius: 4px;
     color: white;
-    padding: 6px 10px;
+    padding: 4px 8px;
     box-sizing: border-box;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
   }
 
   .display-value {
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    padding: 4px 0;
-    display: block;
     color: white;
+    display: block;
+    padding: 2px 0;
   }
 
   /* ---- HP / AC bar ---- */
   .stat-bar {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 6px;
   }
 
   .stat {
-    border-radius: 8px;
-    padding: 12px;
+    border-radius: 6px;
+    padding: 6px;
     text-align: center;
   }
 
@@ -285,95 +292,113 @@
 
   .stat-label {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     color: #ccc;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-size: 1rem;
+    font-weight: bold;
   }
 
   /* ---- Section headers ---- */
   h4 {
-    margin: 4px 0 0 0;
-    font-size: 0.75rem;
-    color: #666;
+    margin: 0;
+    font-size: 0.65rem;
+    color: #555;
     letter-spacing: 2px;
     text-transform: uppercase;
     border-bottom: 1px solid #2a2a4a;
-    padding-bottom: 4px;
+    padding-bottom: 3px;
   }
 
-  /* ---- Ability score rows ---- */
+  /* ---- Ability rows ---- */
   .ability-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 10px;
+    gap: 6px;
+    padding: 3px 8px;
     background-color: #1e1e3a;
-    border-radius: 6px;
+    border-radius: 4px;
   }
 
   .ability-name {
     flex: 1;
-    font-size: 0.85rem;
-    color: #ccc;
+    font-size: 0.75rem;
+    color: #aaa;
   }
 
   .ability-input-display {
-    width: 48px;
+    width: 32px;
     text-align: center;
-    font-size: x-large;
+    font-size: 0.85rem;
+    font-weight: bold;
     background-color: #1e1e3a;
     border: 1px solid #2a2a4a;
-    color: #ccc;
+    border-radius: 4px;
+    color: white;
+    padding: 2px 0;
   }
 
-  /* Racial bonus tag */
   .racial-bonus {
-    width: 28px;
+    width: 24px;
     text-align: center;
+    font-size: 0.75rem;
     color: #a855f7;
     font-weight: 600;
   }
 
-  /* ---- Modifier badge — the main visual focus ---- */
   .modifier {
-    min-width: 42px;
+    width: 32px;
     text-align: center;
-    font-size: x-large;
+    font-size: 0.85rem;
     font-weight: bold;
-    padding: 4px 6px;
-    border-radius: 6px;
+    padding: 2px 4px;
+    border-radius: 4px;
     background-color: #0f0f1e;
     border: 1px solid #2a2a4a;
+    color: white;
   }
 
   /* ---- Saving throw rows ---- */
   .save-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 10px;
-    border-radius: 6px;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: 4px;
   }
 
   .save-row:nth-child(odd) {
     background-color: #1a1a30;
   }
 
+  .proficiency-toggle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #444;
+    background-color: #0f0f1e;
+    flex-shrink: 0;
+  }
+
   .save-name {
     flex: 1;
-    color: #ccc;
+    font-size: 0.75rem;
+    color: #aaa;
   }
 
   .save-mod {
-    font-weight: bold;
-    min-width: 38px;
+    width: 32px;
     text-align: center;
-    padding: 2px 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 2px 4px;
     border-radius: 4px;
-    font-size: x-large;
     background-color: #0f0f1e;
     border: 1px solid #2a2a4a;
+    color: white;
   }
 </style>

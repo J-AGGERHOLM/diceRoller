@@ -112,6 +112,4 @@
     opacity: 1;
     filter: brightness(1.2) drop-shadow(0 0 10px var(--die-color));
   }
-
-
 </style>
