@@ -1,72 +1,55 @@
 <script>
-  import D20 from "../../assets/diceSet/d20.png" 
-  import D12 from "../../assets/diceSet/d12.png" 
-  import D10 from "../..//assets/diceSet/d10.png" 
-  import D100 from "../..//assets/diceSet/d100.png" 
-  import D6 from "../..//assets/diceSet/d6.png" 
-  import D4 from "../..//assets/diceSet/d4.png" 
+  import D20 from '../../assets/diceSet/d20.png';
+  import D12 from '../../assets/diceSet/d12.png';
+  import D10 from '../..//assets/diceSet/d10.png';
+  import D100 from '../..//assets/diceSet/d100.png';
+  import D6 from '../..//assets/diceSet/d6.png';
+  import D4 from '../..//assets/diceSet/d4.png';
+
+  import { selectedDice, addDie, clearDice } from '../../stores/selectedDieStore.js';
 
   // =========== Dice preset =========== //
   const dice = [
-    { label: 'D20', img: D20, color: "red"},
-    { label: 'D12', img: D12, color: "purple"},
-    { label: 'D10', img: D10, color: "blue"},
-    { label: 'Dd100', img: D100, color: "teal"},
-    { label: 'D6', img: D6, color: "green"},
-    { label: 'D4', img: D4, color: "yellow"},
+    { label: 'd20', img: D20, color: 'red' },
+    { label: 'd12', img: D12, color: 'purple' },
+    { label: 'd10', img: D10, color: 'blue' },
+    { label: 'd100', img: D100, color: 'teal' },
+    { label: 'd6', img: D6, color: 'green' },
+    { label: 'd4', img: D4, color: 'yellow' },
   ];
 
-  let selectedList = [];
+  // =========== die functions =========== //
 
-// =========== die functions =========== //
-
-   function addDie(die) {
-    //check for die with die label in list
-    const existingDie = selectedList.find(d => d.label === die.label);
-
-    if (existingDie) {
-      selectedList = selectedList.map(d =>
-        d.label === die.label
-        //if existing we use spread operater to rebind (?) 
-        // selectedList into a copy of the same list + the new die
-          ? { ...d, count: d.count + 1 }
-          : d
-      );
-    } else {
-      selectedList = [...selectedList, { ...die, count: 1 }];
-    }
+  function isSelected(die) {
+    return $selectedDice.some((d) => d.label === die.label);
   }
 
-   function isSelected(die) {
-    return selectedList.some(d => d.label === die.label);
+  function displayCount(die) {
+    const count = $selectedDice.filter((d) => d.label === die.label).length;
+    return count > 0 ? `x${count}` : '';
   }
-
-  function displayCount(die){
-    return selectedList.find(d => d.label === die.label)?.count || 0;
-  }
-
 </script>
 
-  <span class="label">Dice Row:</span>
+<span class="label">Dice Row:</span>
+<button class="clear-dice" on:click={clearDice}>Clear Dice</button>
 
 <div class="dice-row">
   <div class="dice-list">
     {#each dice as die}
-    <div class="dieLabelConnector">
-    <span>{displayCount(die)}</span>
-      <button
-        class="die"
-        class:selected={isSelected(die)}
-        style="--die-color: {die.color}"
-        on:click={() => {
+      <div class="dieLabelConnector">
+        <span>{displayCount(die)}</span>
+        <button
+          class="die"
+          class:selected={isSelected(die)}
+          style="--die-color: {die.color}"
+          on:click={() => {
             addDie(die);
             displayCount(die);
-        }}
-
-        title={die.label}
-      >
-      <img src={die.img} alt={die.label}/>
-      </button>
+          }}
+          title={die.label}
+        >
+          <img src={die.img} alt={die.label} />
+        </button>
       </div>
     {/each}
   </div>
@@ -77,7 +60,8 @@
     justify-content: center;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 6px;
+    max-height: 5vh;
   }
 
   .label {
@@ -91,18 +75,18 @@
   .dice-list {
     display: flex;
     flex-direction: row;
-    gap: 1em;
     flex-wrap: wrap;
+    gap: 1em;
   }
 
-  .dieLabelConnector{
+  .dieLabelConnector {
     display: flex;
     flex-direction: column;
+    max-width: 4em;
   }
 
   .dieLabelConnector span {
-    padding-bottom: 1em;
-
+    padding-bottom: 0.5em;
   }
 
   .die {
@@ -110,7 +94,14 @@
     border: none;
     cursor: pointer;
     opacity: 0.75;
-    transition: opacity 0.2s, transform 0.2s;
+    transition:
+      opacity 0.2s,
+      transform 0.2s;
+    max-height: 50%;
+  }
+
+  .die img {
+    height: 100%;
   }
 
   .die:hover {
@@ -118,8 +109,28 @@
     transform: scale(1.5);
   }
 
-  .die.selected img{
+  .die.selected img {
     opacity: 1;
     filter: brightness(1.2) drop-shadow(0 0 10px var(--die-color));
+  }
+
+  .clear-dice {
+    max-width: 5vw;
+    background: none;
+    border: 1px solid #ffffff20;
+    color: #ffffff60;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .clear-dice:hover {
+    border-color: #ffffff50;
+    color: #ffffff90;
   }
 </style>

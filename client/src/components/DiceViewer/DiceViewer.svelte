@@ -1,33 +1,52 @@
 <script>
-  import DiceBox from "@3d-dice/dice-box"
-  
+  import DiceBox from '@3d-dice/dice-box';
+  import { onMount } from 'svelte';
+  import { selectedDice } from '../../stores/selectedDieStore';
 
-  import { onMount } from "svelte";
+  let diceBox;
 
   onMount(async () => {
-    const diceBox = new DiceBox({
-      container: "#dice-box",
-      assetPath: "/assets/dice-box/",
+    diceBox = new DiceBox({
+      container: '#dice-box',
+      assetPath: '/assets/dice-box/',
       scale: 14,
       offscreen: true,
-      theme: "default",
+      theme: 'default',
     });
-     await diceBox.init().then(() => {
-      const rollValue = diceBox.roll("1d20");
-      console.log(rollValue);
-     })
-  }) 
+    await diceBox.init();
+  });
+
+  function countDice(selectedDice) {
+    const counts = {};
+    selectedDice.forEach((die) => {
+      counts[die.label] = (counts[die.label] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function parceForDiceBox(counts) {
+    return Object.entries(counts).map(([label, count]) => `${count}${label}`);
+  }
+
+  async function rollDce() {
+    if ($selectedDice.length === 0) return;
+
+    const counts = countDice($selectedDice);
+    const parcedArray = parceForDiceBox(counts);
+
+    const results = await diceBox.roll(parcedArray);
+  }
 </script>
 
 <div class="viewer">
-<div id="dice-box" class="dice-box"></div>
-  <button class="roll-btn">ROLL</button>
+  <div id="dice-box" class="dice-box"></div>
+  <button class="roll-btn" on:click={rollDce}>ROLL</button>
 </div>
 
 <style>
   .viewer {
     background-color: #0f0f1a28;
-    border: 1px solid #dc26269c;    
+    border: 1px solid #dc26269c;
     border-radius: 12px;
     height: 50vh;
     display: flex;
@@ -39,17 +58,15 @@
   }
 
   .dice-box {
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-}
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+  }
 
-:global(#dice-box canvas) {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-  
+  :global(#dice-box canvas) {
+    width: 100% !important;
+    height: 100% !important;
+  }
 
   .roll-btn {
     background-color: #ef4444;

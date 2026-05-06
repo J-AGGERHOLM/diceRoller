@@ -1,27 +1,26 @@
 <script>
   // button handlers can be wired up later
-  import logo from "../../assets/Icon.png";
-  import { Link } from "svelte-routing";
+  import logo from '../../assets/Icon.png';
+  import { Link } from 'svelte-routing';
 
   export let onLogOut;
 </script>
 
 <nav class="navbar">
   <div class="brand">
-    <img src="{logo}" alt="logo" class="logo">
+    <img src={logo} alt="logo" class="logo" />
     <div class="brand-text">
       <span class="brand-name">ReRoll</span>
       <span class="brand-sub">3D Dice Roller & Character Manager</span>
     </div>
   </div>
   <div class="actions">
-    
-    <Link to = "/">Log-in</Link>  
-    <Link to = "/welcome">Welcome</Link>  
-    <Link to = "/dicePage">Dice Page</Link>
-    <Link to = "/admin">Admin</Link>  
-    <Link to = "/" on:click = {onLogOut}>Log-out</Link>
-  
+    <Link to="/">Log-in</Link>
+    <Link to="/welcome">Welcome</Link>
+    <Link to="/dicePage">Dice Page</Link>
+    <Link to="/admin">Admin</Link>
+    <Link to="/" on:click={onLogOut}>Log-out</Link>
+
     <button class="btn green">Save</button>
     <button class="btn purple">Dice Style</button>
     <button class="btn red">Sign Out</button>
@@ -45,18 +44,18 @@
   }
 
   .logo {
-    width: 25%;
+    width: 15%;
     height: auto;
   }
 
-  .brand-text{
+  .brand-text {
     display: flex;
     align-items: start;
     flex-direction: column;
   }
 
   .brand-name {
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: bold;
     font-family: 'Cinzel', serif;
     line-height: 1;
@@ -81,7 +80,13 @@
     color: white;
   }
 
-  .green  { background-color: #22c55e; }
-  .purple { background-color: #a855f7; }
-  .red    { background-color: #ef4444; }
+  .green {
+    background-color: #22c55e;
+  }
+  .purple {
+    background-color: #a855f7;
+  }
+  .red {
+    background-color: #ef4444;
+  }
 </style>

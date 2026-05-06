@@ -1,6 +1,7 @@
 .page {
   background-color: #1a1a2e;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   color: white;
   font-family: sans-serif;
 }
@@ -10,15 +11,20 @@
   grid-template-columns: 1fr 25vw;
   gap: 16px;
   padding: 16px;
+  height: 100%;
 }
 
 .left-col {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .right-col {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
 }
