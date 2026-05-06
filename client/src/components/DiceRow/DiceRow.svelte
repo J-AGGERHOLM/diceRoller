@@ -6,7 +6,7 @@
   import D6 from '../..//assets/diceSet/d6.png';
   import D4 from '../..//assets/diceSet/d4.png';
 
-  import { selectedDice, addDie, clearDice } from '../../stores/selectedDieStore.js';
+  import { selectedDice, addDie } from '../../stores/selectedDieStore.js';
 
   // =========== Dice preset =========== //
   const dice = [
@@ -31,7 +31,6 @@
 </script>
 
 <span class="label">Dice Row:</span>
-<button class="clear-dice" on:click={clearDice}>Clear Dice</button>
 
 <div class="dice-row">
   <div class="dice-list">
@@ -114,23 +113,5 @@
     filter: brightness(1.2) drop-shadow(0 0 10px var(--die-color));
   }
 
-  .clear-dice {
-    max-width: 5vw;
-    background: none;
-    border: 1px solid #ffffff20;
-    color: #ffffff60;
-    border-radius: 6px;
-    padding: 4px 12px;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition:
-      border-color 0.2s,
-      color 0.2s;
-  }
 
-  .clear-dice:hover {
-    border-color: #ffffff50;
-    color: #ffffff90;
-  }
 </style>

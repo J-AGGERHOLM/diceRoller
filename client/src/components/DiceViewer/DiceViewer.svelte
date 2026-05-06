@@ -1,7 +1,7 @@
 <script>
   import DiceBox from '@3d-dice/dice-box';
   import { onMount } from 'svelte';
-  import { selectedDice } from '../../stores/selectedDieStore';
+  import { selectedDice, clearDice } from '../../stores/selectedDieStore';
 
   let diceBox;
 
@@ -40,7 +40,10 @@
 
 <div class="viewer">
   <div id="dice-box" class="dice-box"></div>
-  <button class="roll-btn" on:click={rollDce}>ROLL</button>
+  <div class="button-row">
+    <button class="roll-btn" on:click={rollDce}>ROLL</button>
+    <button class="clear-dice" on:click={clearDice}>Clear Dice</button>
+  </div>
 </div>
 
 <style>
@@ -68,6 +71,12 @@
     height: 100% !important;
   }
 
+  .button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+  }
+
   .roll-btn {
     background-color: #ef4444;
     color: white;
@@ -82,5 +91,25 @@
 
   .roll-btn:hover {
     background-color: #dc2626;
+  }
+
+  .clear-dice {
+    max-width: 5vw;
+    background: none;
+    border: 1px solid #ffffff20;
+    color: #ffffff60;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .clear-dice:hover {
+    border-color: #ffffff50;
+    color: #ffffff90;
   }
 </style>
