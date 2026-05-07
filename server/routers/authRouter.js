@@ -17,8 +17,16 @@ function isAdmin(req, res, next) {
 router.post("/auth/login", async (req, res) => {
   //compare password to DB here:
   const { username, password } = req.body;
-  const result = await db.prepare(`SELECT role, password FROM users WHERE  username = ? `)
-  .get(username);
+
+  const [response] = await db.execute(`SELECT role, password FROM users WHERE  username = ? `,
+  [username]
+  );
+
+  const result = response[0];
+
+  if(!result){
+    return res.status(401).send({ message: "Invalid Credentials" });
+  }
 
   const isMatch = await comparePassword(password, result.password);
 
