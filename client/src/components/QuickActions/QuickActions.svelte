@@ -1,7 +1,6 @@
 <span class="label">Quick Actions:</span>
 <div class="quick-actions">
   <div class="groups">
-
     <div class="group purple">
       <button class="action-btn purple">+ Custom</button>
     </div>
@@ -23,29 +22,28 @@
       <button class="action-btn gray">CHA Save</button>
     </div>
 
-<div class="divider"></div>
+    <div class="divider"></div>
 
-<div class="group">
-  <button class="action-btn blue">Acrobatics</button>
-  <button class="action-btn blue">Animal Handling</button>
-  <button class="action-btn blue">Arcana</button>
-  <button class="action-btn blue">Athletics</button>
-  <button class="action-btn blue">Deception</button>
-  <button class="action-btn blue">History</button>
-  <button class="action-btn blue">Insight</button>
-  <button class="action-btn blue">Intimidation</button>
-  <button class="action-btn blue">Investigation</button>
-  <button class="action-btn blue">Medicine</button>
-  <button class="action-btn blue">Nature</button>
-  <button class="action-btn blue">Perception</button>
-  <button class="action-btn blue">Performance</button>
-  <button class="action-btn blue">Persuasion</button>
-  <button class="action-btn blue">Religion</button>
-  <button class="action-btn blue">Sleight of Hand</button>
-  <button class="action-btn blue">Stealth</button>
-  <button class="action-btn blue">Survival</button>
-</div>
-
+    <div class="group">
+      <button class="action-btn blue">Acrobatics</button>
+      <button class="action-btn blue">Animal Handling</button>
+      <button class="action-btn blue">Arcana</button>
+      <button class="action-btn blue">Athletics</button>
+      <button class="action-btn blue">Deception</button>
+      <button class="action-btn blue">History</button>
+      <button class="action-btn blue">Insight</button>
+      <button class="action-btn blue">Intimidation</button>
+      <button class="action-btn blue">Investigation</button>
+      <button class="action-btn blue">Medicine</button>
+      <button class="action-btn blue">Nature</button>
+      <button class="action-btn blue">Perception</button>
+      <button class="action-btn blue">Performance</button>
+      <button class="action-btn blue">Persuasion</button>
+      <button class="action-btn blue">Religion</button>
+      <button class="action-btn blue">Sleight of Hand</button>
+      <button class="action-btn blue">Stealth</button>
+      <button class="action-btn blue">Survival</button>
+    </div>
   </div>
 </div>
 
@@ -79,7 +77,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: .5em;
+    gap: 0.5em;
   }
 
   .action-btn {
@@ -92,14 +90,23 @@
     white-space: nowrap;
   }
 
-  .purple { background-color: #7c3aed; }
-  .red    { background-color: #ef4444; }
-  .gray   { background-color: #374151; }
-  .blue   { background-color: #2563eb; }
+  .purple {
+    background-color: #7c3aed;
+  }
+  .red {
+    background-color: #ef4444;
+  }
+  .gray {
+    background-color: #374151;
+  }
+  .blue {
+    background-color: #2563eb;
+  }
 
   .divider {
-  width: 1px;
-  background-color: #4f4f68;
-  align-self: stretch;
-}
+    width: 1px;
+    background-color: #4f4f68;
+    align-self: stretch;
+    justify-self: center;
+  }
 </style>
