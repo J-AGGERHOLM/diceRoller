@@ -61,6 +61,8 @@ if (deleteMode) {
     ['user01', hashedPassword, 'User']
     );
 
+
+  //seeding character entries
   await db.execute(
   `INSERT INTO characters (user_id, name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score)
    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
