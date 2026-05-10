@@ -5,12 +5,12 @@ const router = Router();
 
 // ================== character endpoints ================== //
 //all characters for a user
-router.get("/characters/:userid", async (req, res) => {
+router.get("/characters", async (req, res) => {
 
-    const { userid } = req.params;
+    const user_id = req.session.user_id;
 
     const [response] = await db.execute(`SELECT * FROM characters WHERE user_id = ?`, 
-        [userid]
+        [user_id]
     );
     
     res.send(response)
@@ -64,9 +64,5 @@ router.delete("/characters/:userid/:characterid", async (req, res) => {
 
     res.send({ data: `${characterid} has been deleted`})
 })
-
-
-
-
 
 export default router;

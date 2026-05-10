@@ -16,7 +16,7 @@
   </div>
   <div class="actions">
     <Link to="/">Log-in</Link>
-    <Link to="/welcome">Welcome</Link>
+    <Link to="/overview">Overview</Link>
     <Link to="/dicePage">Dice Page</Link>
     <Link to="/admin">Admin</Link>
     <Link to="/" on:click={onLogOut}>Log-out</Link>

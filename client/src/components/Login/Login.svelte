@@ -1,41 +1,51 @@
 <script>
-import { navigate } from "svelte-routing";
-import { fetchGet, fetchPost } from "../../util/fetchUtil.js"
-import toastr from "toastr";
-import "toastr/build/toastr.min.css";
+  import { navigate } from 'svelte-routing';
+  import { fetchGet, fetchPost } from '../../util/fetchUtil.js';
+  import toastr from 'toastr';
+  import 'toastr/build/toastr.min.css';
 
-let username = "";
-let password = "";
+  let username = '';
+  let password = '';
 
-async function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
-    const result = await fetchPost("/auth/login", { username, password });
+    const result = await fetchPost('/auth/login', { username, password });
 
     if (result.ok) {
-      toastr.info(result.data.message, "success");
-      navigate("/welcome");
+      toastr.info(result.data.message, 'success');
+      navigate('/overview');
     } else {
-      toastr.warning(result.data.message, "error")
+      toastr.warning(result.data.message, 'error');
     }
   }
 </script>
 
-
 <div id="loginCard" class="login-card">
-    <form on:submit={handleLogin}>
+  <form on:submit={handleLogin}>
     <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Type here..." bind:value={username}>
-    <br>
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Type here..."
+      bind:value={username}
+    />
+    <br />
     <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Type here..." bind:value={password}>
-    <br>
-        <button class="sign-in-button" type="submit">Sign In</button>
-    </form>
-
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Type here..."
+      bind:value={password}
+    />
+    <br />
+    <button class="sign-in-button" type="submit">Sign In</button>
+  </form>
 </div>
-<style>
 
+<style>
   .login-card {
     width: 100%;
     max-width: 20vw;
@@ -54,7 +64,6 @@ async function handleLogin(event) {
   label {
     margin-bottom: 8px;
     color: #a8b0c0;
-
   }
 
   input {
@@ -96,9 +105,5 @@ async function handleLogin(event) {
 
   .sign-in-button:hover {
     box-shadow: 0px 0px 25px rgba(37, 99, 235, 0.35);
-
   }
-
-
-
 </style>
