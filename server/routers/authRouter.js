@@ -18,7 +18,7 @@ router.post("/auth/login", async (req, res) => {
   //compare password to DB here:
   const { username, password } = req.body;
 
-  const [response] = await db.execute(`SELECT role, password FROM users WHERE  username = ? `,
+  const [response] = await db.execute(`SELECT role, password, id FROM users WHERE  username = ? `,
   [username]
   );
 
@@ -28,6 +28,7 @@ router.post("/auth/login", async (req, res) => {
     return res.status(401).send({ message: "Invalid Credentials" });
   }
 
+  req.session.user_id = result.id;
   const isMatch = await comparePassword(password, result.password);
 
   if (isMatch && result.role === "Admin") {
