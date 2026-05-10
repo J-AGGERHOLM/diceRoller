@@ -55,6 +55,15 @@ router.put("/characters/:userid/:characterid", async (req, res) => {
     res.send({ data: `${name} has been updated`})
 });
 
+//delete character:
+router.delete("/characters/:userid/:characterid", async (req, res) => {
+    const { userid, characterid } = req.params;
+
+    await db.execute(`DELETE FROM characters WHERE user_id = ? AND id = ? `,
+        [userid, characterid])
+
+    res.send({ data: `${characterid} has been deleted`})
+})
 
 
 
