@@ -32,11 +32,7 @@ router.get("/characters/:userid/:characterid", async (req, res) => {
 
 // create new character
 router.post("/characters", async (req, res) => {
-    const {
-        user_id, name, level, race, class_name, 
-        str_score, dex_score, con_score, int_score, 
-        wis_score, cha_score 
-    } = req.body;
+    const { user_id, name, level, race, class_name } = req.body;
 
     await db.execute(`INSERT INTO characters (
         user_id, name, level, race, class_name)
@@ -48,11 +44,16 @@ router.post("/characters", async (req, res) => {
 });
 
 //update character
-/*
-router.put("/characters/:userid/:characterid"), async (req, res) => {
+router.put("/characters/:userid/:characterid", async (req, res) => {
+    const { userid, characterid } = req.params;
+    const { name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score} = req.body;
 
-}
-*/
+    await db.execute(`UPDATE characters SET name = ?, level = ?, race = ?, class_name = ?, str_score = ?, dex_score = ?, con_score = ?, int_score = ?, wis_score = ?, cha_score = ?
+        WHERE id = ? AND user_id = ?`,
+    [name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score, characterid, userid])
+
+    res.send({ data: `${name} has been updated`})
+});
 
 
 
