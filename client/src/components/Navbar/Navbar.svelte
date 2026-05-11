@@ -21,8 +21,6 @@
     <Link to="/admin">Admin</Link>
     <Link to="/" on:click={onLogOut}>Log-out</Link>
 
-    <button class="btn green">Save</button>
-    <button class="btn purple">Dice Style</button>
     <button class="btn red">Sign Out</button>
   </div>
 </nav>
@@ -80,12 +78,6 @@
     color: white;
   }
 
-  .green {
-    background-color: #22c55e;
-  }
-  .purple {
-    background-color: #a855f7;
-  }
   .red {
     background-color: #ef4444;
   }
