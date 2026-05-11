@@ -50,15 +50,14 @@ export async function fetchDelete(endpoint) {
   try {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'DELETE',
-      credentials: "include",
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
     });
     const data = await response.json();
-    return { ok: response.ok, data}
-    
-  }catch(error) {
-    console.log(error)
+    return { ok: response.ok, data };
+  } catch (error) {
+    console.log(error);
   }
 }

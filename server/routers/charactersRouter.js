@@ -56,11 +56,11 @@ router.put("/characters/:userid/:characterid", async (req, res) => {
 });
 
 //delete character:
-router.delete("/characters/:userid/:characterid", async (req, res) => {
-    const { userid, characterid } = req.params;
+router.delete("/characters/:characterid", async (req, res) => {
+    const { characterid } = req.params;
 
-    await db.execute(`DELETE FROM characters WHERE user_id = ? AND id = ? `,
-        [userid, characterid])
+    await db.execute(`DELETE FROM characters WHERE id = ? `,
+        [characterid])
 
     res.send({ data: `${characterid} has been deleted`})
 })

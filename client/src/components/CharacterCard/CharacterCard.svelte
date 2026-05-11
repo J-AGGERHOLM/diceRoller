@@ -1,4 +1,5 @@
 <script>
+  import { fetchDelete } from '../../util/fetchUtil';
 
   export let character = {
     name: 'name',
@@ -11,12 +12,18 @@
 
 <div class="character-card">
   <h4 class="character-name">{character.name}</h4>
-  <span class="character-class">{character.class_name}</span>
-  <span class="character-race">{character.race}</span>
-  <span class="character-level">{character.level}</span>
-
+  <div class="character-details">
+    <span class="character-class">{character.class_name}</span>
+    <span class="character-race">{character.race}</span>
+    <span class="character-level">{character.level}</span>
+  </div>
   <div class="options-row">
-    <button class="delete-btn"><i class="fa-regular fa-trash-can"></i></button>
+    <button
+      class="delete-btn"
+      on:click={() =>
+        fetchDelete(`/characters/${character.id}`).then(() => window.location.reload())}
+      ><i class="fa-regular fa-trash-can"></i></button
+    >
   </div>
 </div>
 
@@ -47,5 +54,19 @@
     border: none;
     color: #ef4444;
     font-size: larger;
+  }
+
+  .options-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: relative;
+    bottom: 0;
+  }
+
+  .character-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 </style>
