@@ -32,7 +32,8 @@ router.get("/characters/:userid/:characterid", async (req, res) => {
 
 // create new character
 router.post("/characters", async (req, res) => {
-    const { user_id, name, level, race, class_name } = req.body;
+    const user_id = req.session.user_id;
+    const { name, level, race, class_name } = req.body;
 
     await db.execute(`INSERT INTO characters (
         user_id, name, level, race, class_name)

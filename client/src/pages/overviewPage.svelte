@@ -1,9 +1,11 @@
 <script>
   import CharacterCard from '../components/CharacterCard/CharacterCard.svelte';
+  import CharacterModal from '../components/CharacterModal/CharacterModal.svelte';
   import { fetchGet } from '../util/fetchUtil';
   import { onMount } from 'svelte';
 
-  let characters = [];
+  let characters = $state([]);
+  let showModal = $state(false);
 
   onMount(async () => {
     const { data } = await fetchGet('/characters/');
@@ -11,11 +13,14 @@
   });
 </script>
 
+<CharacterModal bind:showModal></CharacterModal>
 <div class="overview-page">
   <div class="content">
     <div class="header-row">
       <h4 class="page-header">Your characters</h4>
-      <button class="create-character-button">New Character</button>
+      <button class="create-character-button" onclick={() => (showModal = true)}
+        >New Character</button
+      >
     </div>
     <div class="divider"></div>
     <div class="cards-container">
