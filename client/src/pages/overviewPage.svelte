@@ -17,6 +17,7 @@
       <h4 class="page-header">Your characters</h4>
       <button class="create-character-button">New Character</button>
     </div>
+    <div class="divider"></div>
     <div class="cards-container">
       {#each characters as character}
         <CharacterCard {character}></CharacterCard>
@@ -71,5 +72,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .divider {
+    border-top: 1px solid rgba(79, 93, 122, 0.35);
+    width: 100%;
   }
 </style>
