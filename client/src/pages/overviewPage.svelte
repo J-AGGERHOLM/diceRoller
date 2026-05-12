@@ -1,6 +1,7 @@
 <script>
   import CharacterCard from '../components/CharacterCard/CharacterCard.svelte';
   import CharacterModal from '../components/CharacterModal/CharacterModal.svelte';
+  import { classList } from '../data/characterData';
   import { fetchGet } from '../util/fetchUtil';
   import { onMount } from 'svelte';
 
@@ -11,6 +12,11 @@
     const { data } = await fetchGet('/characters/');
     characters = data;
   });
+
+  function getClassColor(className) {
+    const characterClass = classList.find((listedClass) => listedClass.name === className);
+    return characterClass.color;
+  }
 </script>
 
 <CharacterModal bind:showModal></CharacterModal>
@@ -25,7 +31,9 @@
     <div class="divider"></div>
     <div class="cards-container">
       {#each characters as character}
-        <CharacterCard {character}></CharacterCard>
+        <div style="--class-color: {getClassColor(character.class_name)}">
+          <CharacterCard {character}></CharacterCard>
+        </div>
       {/each}
     </div>
   </div>

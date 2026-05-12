@@ -14,6 +14,7 @@
     event.preventDefault();
     fetchPost('/characters', { name, race, class_name, level });
     dialog.close();
+    window.location.reload();
   }
 </script>
 
@@ -48,6 +49,7 @@
     <label>level</label>
     <input placeholder="Level" bind:value={level} />
     <div class="options-row">
+      <button>Play</button>
       <button type="submit" class="save-btn" onclick={Save}>Save</button>
     </div>
   </form>
