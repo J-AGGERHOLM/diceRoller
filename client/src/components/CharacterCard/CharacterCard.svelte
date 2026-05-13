@@ -1,5 +1,7 @@
 <script>
-  import { fetchDelete } from '../../util/fetchUtil';
+  import { fetchDelete, fetchGet } from '../../util/fetchUtil';
+  import { character as characterStore } from '../../stores/characterStore';
+  import { Link } from 'svelte-routing';
 
   export let character = {
     name: 'name',
@@ -8,15 +10,22 @@
     level: 0,
     id: 0,
   };
+
+  async function getCharacter(characterId) {
+    const { data } = await fetchGet(`/characters/${characterId}`);
+    characterStore.set(data);
+  }
+
+  async function deleteCharacter(characterId) {
+    fetchDelete(`/characters/${characterId}`);
+    window.location.reload();
+  }
 </script>
 
 <div class="character-card">
   <div class="options-row">
     <span class="character-class">{character.class_name}</span>
-    <button
-      class="delete-btn"
-      on:click={() =>
-        fetchDelete(`/characters/${character.id}`).then(() => window.location.reload())}
+    <button class="delete-btn" on:click={() => deleteCharacter(character.id)}
       ><i class="fa-regular fa-trash-can"></i></button
     >
   </div>
@@ -28,7 +37,9 @@
       </span>
     </span>
   </div>
-  <button class="play-btn">Play</button>
+  <button class="play-btn" on:click={() => getCharacter(character.id)}
+    ><Link to="/dicePage">Play</Link></button
+  >
 </div>
 
 <style>

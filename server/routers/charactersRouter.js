@@ -7,10 +7,10 @@ const router = Router();
 //all characters for a user
 router.get("/characters", async (req, res) => {
 
-    const user_id = req.session.user_id;
+    const userId = req.session.user_id;
 
     const [response] = await db.execute(`SELECT * FROM characters WHERE user_id = ?`, 
-        [user_id]
+        [userId]
     );
     
     res.send(response)
@@ -18,12 +18,12 @@ router.get("/characters", async (req, res) => {
 });
 
 //get specific character
-router.get("/characters/:userid/:characterid", async (req, res) => {
-
-    const { userid, characterid } = req.params;
+router.get("/characters/:characterid", async (req, res) => {
+    const userId = req.session.user_id;
+    const { characterid } = req.params;
 
     const [response] = await db.execute(`SELECT * FROM characters WHERE user_id = ? AND id = ?`,
-        [userid, characterid]
+        [userId, characterid]
     );
 
 

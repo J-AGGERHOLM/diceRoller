@@ -9,7 +9,12 @@
   let className = $state($character.className);
   let race = $state($character.race);
   let level = $state($character.level);
-  let abilities = $state({ ...$character.abilities });
+  let str_score = $state($character.str_score);
+  let dex_score = $state($character.dex_score);
+  let con_score = $state($character.con_score);
+  let int_score = $state($character.int_score);
+  let wis_score = $state($character.wis_score);
+  let cha_score = $state($character.cha_score);
 
   // ============== template lists ============== //
   const abilityList = [
