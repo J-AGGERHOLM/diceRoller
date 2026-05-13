@@ -1,76 +1,33 @@
 <script>
+  import { derived } from 'svelte/store';
   import { character } from '../../stores/characterStore';
   import { calculateModifier, calculateHitpoints } from '../../util/dndCalculations.js';
+  import { fetchPut } from '../../util/fetchUtil';
+  import { classList, raceList, abilityList, saveList } from '../../data/characterData';
+
   // ============== is edit mode ============== //
   let editMode = $state(false);
 
-  // ============== form defaults ============== //
-  let name = $state($character.name);
-  let className = $state($character.className);
-  let race = $state($character.race);
-  let level = $state($character.level);
-  let abilities = $state({ ...$character.abilities });
-
-  // ============== template lists ============== //
-  const abilityList = [
-    { key: 'str', name: 'Strength' },
-    { key: 'dex', name: 'Dexterity' },
-    { key: 'con', name: 'Constitution' },
-    { key: 'int', name: 'Intelligence' },
-    { key: 'wis', name: 'Wisdom' },
-    { key: 'cha', name: 'Charisma' },
-  ];
-
-  const saveList = [
-    { key: 'str', name: 'STR Save' },
-    { key: 'dex', name: 'DEX Save' },
-    { key: 'con', name: 'CON Save' },
-    { key: 'int', name: 'INT Save' },
-    { key: 'wis', name: 'WIS Save' },
-    { key: 'cha', name: 'CHA Save' },
-  ];
-
-  const classList = [
-    { name: 'Barbarian', hitDie: 12, savingThrows: ['str', 'con'] },
-    { name: 'Bard', hitDie: 8, savingThrows: ['dex', 'cha'] },
-    { name: 'Cleric', hitDie: 8, savingThrows: ['wis', 'cha'] },
-    { name: 'Druid', hitDie: 8, savingThrows: ['int', 'wis'] },
-    { name: 'Fighter', hitDie: 10, savingThrows: ['str', 'con'] },
-    { name: 'Monk', hitDie: 8, savingThrows: ['str', 'dex'] },
-    { name: 'Paladin', hitDie: 10, savingThrows: ['wis', 'cha'] },
-    { name: 'Ranger', hitDie: 10, savingThrows: ['str', 'dex'] },
-    { name: 'Rogue', hitDie: 8, savingThrows: ['dex', 'int'] },
-    { name: 'Sorcerer', hitDie: 6, savingThrows: ['con', 'cha'] },
-    { name: 'Warlock', hitDie: 8, savingThrows: ['wis', 'cha'] },
-    { name: 'Wizard', hitDie: 6, savingThrows: ['int', 'wis'] },
-  ];
-
-  const raceList = [
-    { name: 'Human', bonuses: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 } },
-    { name: 'Elf', bonuses: { dex: 2 } },
-    { name: 'Dwarf', bonuses: { con: 2 } },
-    { name: 'Halfling', bonuses: { dex: 2 } },
-    { name: 'Gnome', bonuses: { int: 2 } },
-    { name: 'Half-Elf', bonuses: { cha: 2, str: 1, dex: 1 } },
-    { name: 'Half-Orc', bonuses: { str: 2, con: 1 } },
-    { name: 'Tiefling', bonuses: { cha: 2, int: 1 } },
-    { name: 'Dragonborn', bonuses: { str: 2, cha: 1 } },
-  ];
+  // ============== edits holder ============== //
+  let characterEdits = $state({ ...$character });
 
   // ============== calculated values ============== //
   let selectedRace = $derived(
-    raceList.find((race) => race.name.toLocaleLowerCase() === $character.race.toLocaleLowerCase()),
+    raceList.find(
+      (race) => race.name.toLocaleLowerCase() === ($character.race ?? '').toLocaleLowerCase(),
+    ),
   );
   let conModifier = $derived(
-    calculateModifier($character.abilities.con, selectedRace?.bonuses?.con ?? 0),
+    calculateModifier($character.con_score, selectedRace?.bonuses?.con ?? 0),
   );
   let maxHitpoints = $derived(
-    calculateHitpoints($character.className, $character.level, conModifier, classList),
+    calculateHitpoints(characterEdits.class_name, characterEdits.level, conModifier, classList),
   );
 
   // ============== functions ============== //
   function saveEdits() {
-    character.set({ ...$character, name, className, level, race, abilities });
+    character.set(characterEdits);
+    fetchPut(`/characters/${$character.id}`, characterEdits);
     editMode = false;
   }
 </script>
@@ -98,7 +55,7 @@
     <div class="display">
       <label>Name</label>
       {#if editMode}
-        <input type="text" bind:value={name} placeholder="Character name" />
+        <input type="text" bind:value={characterEdits.name} placeholder="Character name" />
       {:else}
         <span class="display-value">{$character?.name || '—'}</span>
       {/if}
@@ -107,21 +64,21 @@
     <div class="display">
       <label>Class</label>
       {#if editMode}
-        <select bind:value={className}>
+        <select bind:value={characterEdits.class_name}>
           <option value="" disabled>Select a class</option>
           {#each classList as classOption}
             <option value={classOption.name}>{classOption.name}</option>
           {/each}
         </select>
       {:else}
-        <span class="display-value">{$character?.className || '—'}</span>
+        <span class="display-value">{$character?.class_name || '—'}</span>
       {/if}
     </div>
 
     <div class="display">
       <label>Race</label>
       {#if editMode}
-        <select bind:value={race}>
+        <select bind:value={characterEdits.race}>
           <option value="" disabled>Select a race</option>
           {#each raceList as race}
             <option value={race.name}>{race.name}</option>
@@ -135,7 +92,7 @@
     <div class="display">
       <label>Level</label>
       {#if editMode}
-        <input placeholder="level" bind:value={level} />
+        <input placeholder="level" bind:value={characterEdits.level} />
       {:else}
         <span class="display-value">{$character?.level || '—'}</span>
       {/if}
@@ -160,14 +117,16 @@
       <span class="ability-name">{ability.name}</span>
 
       {#if editMode}
-        <input class="ability-input-display" bind:value={abilities[ability.key]} />
+        <input class="ability-input-display" bind:value={characterEdits[ability.key]} />
       {:else}
-        <span class="ability-input-display"> {$character?.abilities?.[ability.key] ?? '---'} </span>
+        <span class="ability-input-display">
+          {$character[ability.key] ?? '---'}
+        </span>
       {/if}
       <span class="racial-bonus">{selectedRace?.bonuses?.[ability.key] ?? 0}</span>
       <span class="modifier"
         >{calculateModifier(
-          $character?.abilities?.[ability.key],
+          $character[ability.key],
           selectedRace?.bonuses?.[ability.key] ?? 0,
         )}</span
       >
@@ -181,10 +140,7 @@
       <span class="proficiency-toggle"></span>
       <span class="save-name">{save.name}</span>
       <span class="save-mod"
-        >{calculateModifier(
-          $character?.abilities?.[save.key],
-          selectedRace?.bonuses?.[save.key] ?? 0,
-        )}</span
+        >{calculateModifier($character[save.key], selectedRace?.bonuses?.[save.key] ?? 0)}</span
       >
     </div>
   {/each}

@@ -332,3 +332,8 @@ html {
   padding: 0;
   height: 100%;
 }
+
+button:hover {
+  cursor: pointer;
+  filter: brightness(1.2);
+}

@@ -53,6 +53,9 @@ app.use("/auth", authLimiter);
 import authRouter from "./routers/authRouter.js";
 app.use(authRouter);
 
+import characterRouter from "./routers/charactersRouter.js"
+app.use(characterRouter);
+
 
 
 
