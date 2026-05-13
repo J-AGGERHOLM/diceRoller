@@ -6,7 +6,7 @@ export const character = writable({
   name: 'Origrin Doomhammer',
   level: 1,
   race: 'Human',
-  className: 'Fighter',
+  class_name: 'Fighter',
   str_score: 15,
   dex_score: 12,
   con_score: 13,

@@ -19,15 +19,14 @@ router.get("/characters", async (req, res) => {
 
 //get specific character
 router.get("/characters/:characterid", async (req, res) => {
-    const userId = req.session.user_id;
     const { characterid } = req.params;
 
-    const [response] = await db.execute(`SELECT * FROM characters WHERE user_id = ? AND id = ?`,
-        [userId, characterid]
+    const [response] = await db.execute(`SELECT * FROM characters WHERE id = ?`,
+        [characterid]
     );
 
 
-    res.send(response);
+    res.send(response[0]);
 });
 
 // create new character
@@ -45,13 +44,13 @@ router.post("/characters", async (req, res) => {
 });
 
 //update character
-router.put("/characters/:userid/:characterid", async (req, res) => {
-    const { userid, characterid } = req.params;
+router.put("/characters/:characterid", async (req, res) => {
+    const { characterid } = req.params;
     const { name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score} = req.body;
 
     await db.execute(`UPDATE characters SET name = ?, level = ?, race = ?, class_name = ?, str_score = ?, dex_score = ?, con_score = ?, int_score = ?, wis_score = ?, cha_score = ?
-        WHERE id = ? AND user_id = ?`,
-    [name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score, characterid, userid])
+        WHERE id = ?`,
+    [name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score, characterid])
 
     res.send({ data: `${name} has been updated`})
 });
