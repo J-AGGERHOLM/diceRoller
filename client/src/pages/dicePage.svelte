@@ -4,6 +4,7 @@
   import DiceRow from '../components/DiceRow/DiceRow.svelte';
   import QuickActions from '../components/QuickActions/QuickActions.svelte';
   import CharacterSheet from '../components/CharacterSheet/CharacterSheet.svelte';
+  import ChatRoom from '../components/ChatRoom/ChatRoom.svelte';
 </script>
 
 <div class="page">
@@ -11,7 +12,7 @@
     <div class="left-col">
       <DiceViewer></DiceViewer>
       <DiceRow></DiceRow>
-      <QuickActions></QuickActions>
+      <ChatRoom></ChatRoom>
     </div>
     <div class="right-col">
       <CharacterSheet></CharacterSheet>
