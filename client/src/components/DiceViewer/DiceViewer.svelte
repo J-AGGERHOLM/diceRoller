@@ -34,6 +34,7 @@
     return newArray.reduce((acc, number) => acc + number, 0);
   }
 
+
   async function rollDce() {
     resultDisplay = '';
     if ($selectedDice.length === 0) return;

@@ -10,9 +10,11 @@
 <div class="page">
   <main class="layout">
     <div class="left-col">
+      <ChatRoom></ChatRoom>
+    </div>
+    <div class="middle-col">
       <DiceViewer></DiceViewer>
       <DiceRow></DiceRow>
-      <ChatRoom></ChatRoom>
     </div>
     <div class="right-col">
       <CharacterSheet></CharacterSheet>
