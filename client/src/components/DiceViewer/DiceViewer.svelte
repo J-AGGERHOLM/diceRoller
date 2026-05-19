@@ -2,9 +2,17 @@
   import DiceBox from '@3d-dice/dice-box';
   import { onMount } from 'svelte';
   import { selectedDice, clearDice } from '../../stores/selectedDieStore';
+  import { io } from 'socket.io-client';
+  import { BASE_URL } from '../../stores/storesConfig';
+  import { currentMessage } from '../../stores/currentMessage';
+  import { messageList } from '../../stores/messageList';
+  import { derived } from 'svelte/store';
 
   let diceBox;
   let resultDisplay = $state('');
+
+  let messageInput = $derived(`Rolled a ${resultDisplay}`);
+  let socket;
 
   onMount(async () => {
     diceBox = new DiceBox({
@@ -15,6 +23,9 @@
       theme: 'default',
     });
     await diceBox.init();
+    socket = io(BASE_URL, {
+      withCredentials: true,
+    });
   });
 
   function countDice(selectedDice) {
@@ -34,6 +45,22 @@
     return newArray.reduce((acc, number) => acc + number, 0);
   }
 
+  function rollResultToChat() {
+    socket.on('server-sends-message', (data) => {
+      console.log('incoming message: ', data.data);
+      currentMessage.set(data.data);
+
+      messageList.update((messageList) => {
+        messageList.push({
+          characterName: data.characterName,
+          timeSubmitted: data.timeSubmitted,
+          message: data.data,
+        });
+        return messageList;
+      });
+    });
+    socket.emit('client-sends-message', { data: messageInput });
+  }
 
   async function rollDce() {
     resultDisplay = '';
@@ -44,6 +71,7 @@
 
     const results = await diceBox.roll(parcedArray);
     resultDisplay = calculateResults(results);
+    rollResultToChat();
   }
 </script>
 
