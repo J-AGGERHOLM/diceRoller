@@ -74,7 +74,7 @@ io.engine.use(sessionMiddleware);
 io.on("connection", (socket) => {
   console.log("a new socket connected with the id", socket.id);
 
-  sockey.on("client-sends-message", (data) => {
+  socket.on("client-sends-message", (data) => {
     const session = socket.request.session;
     
     session.timeSubmitted = (session.timeSubmitted || 0) + 1
@@ -83,7 +83,7 @@ io.on("connection", (socket) => {
     data.characterName = session.characterName;
     data.timeSubmitted = session.timeSubmitted;
 
-    socket.emit("client-sends-message", data);
+    io.emit("server-sends-message", data);
   });
 
   socket.on("disconnect", () => {

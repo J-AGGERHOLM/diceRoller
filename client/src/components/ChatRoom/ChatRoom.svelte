@@ -10,7 +10,11 @@
   let messageInput = '';
 
   onMount(() => {
-    socket = io($BASE_URL, {
+    if (socket) {
+      return;
+    }
+
+    socket = io(BASE_URL, {
       withCredentials: true,
     });
 
@@ -38,5 +42,5 @@
   <div>{messageItem.characterName} |{messageItem.timeSubmitted}| : {messageItem.message}</div>
 {/each}
 
-<input type="text" bind:value={messageInput}>
+<input type="text" bind:value={messageInput} />
 <button onclick={submitMessage}> Submit Message </button>
