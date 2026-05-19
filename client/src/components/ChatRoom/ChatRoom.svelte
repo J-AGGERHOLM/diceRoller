@@ -1,37 +1,10 @@
 <script>
-  import io from 'socket.io-client';
-  import { BASE_URL } from '../../stores/storesConfig';
-  import { onMount } from 'svelte';
-  import { currentMessage } from '../../stores/currentMessage';
-  import { messageList } from '../../stores/messageList';
+import { messageList } from '../../stores/messageList';
+import { socket } from '../../stores/socketStore';
 
-  let socket;
 
   let messageInput = '';
 
-  onMount(() => {
-    if (socket) {
-      return;
-    }
-
-    socket = io(BASE_URL, {
-      withCredentials: true,
-    });
-
-    socket.on('server-sends-message', (data) => {
-      console.log('incoming message: ', data.data);
-      currentMessage.set(data.data);
-
-      messageList.update((messageList) => {
-        messageList.push({
-          characterName: data.characterName,
-          timeSubmitted: data.timeSubmitted,
-          message: data.data,
-        });
-        return messageList;
-      });
-    });
-  });
 
   function submitMessage() {
     socket.emit('client-sends-message', { data: messageInput });
