@@ -4,8 +4,23 @@
   import logo from '../../assets/Icon.png';
   import { Link } from 'svelte-routing';
   import { isAdmin, checkAdmin } from '../../stores/adminStore';
+  import { fetchGet } from '../../util/fetchUtil';
+  import { navigate } from 'svelte-routing';
+  import toastr from 'toastr';
 
-  export let onLogOut;
+  async function logOut() {
+    try {
+      const result = await fetchGet('/auth/logout');
+      if (result.ok) {
+        toastr.info(result.data.message, 'succes');
+        navigate('/');
+      } else {
+        toastr.warning(result.data.message, 'error');
+      }
+    } catch (error) {
+      toastr.warning(error, 'error');
+    }
+  }
 
   onMount(() => {
     checkAdmin();
@@ -25,7 +40,7 @@
     {#if $isAdmin}
       <Link to="/admin">Admin</Link>
     {/if}
-    <Link to="/" on:click={onLogOut}>Sign Out</Link>
+    <Link to="/" on:click={logOut}>Sign Out</Link>
   </div>
 </nav>
 
