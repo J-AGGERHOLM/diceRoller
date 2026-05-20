@@ -9,6 +9,13 @@
   import Navbar from './components/Navbar/Navbar.svelte';
   import { fetchGet } from './util/fetchUtil';
   import toastr from 'toastr';
+  import 'toastr/build/toastr.min.css';
+
+  toastr.options = {
+    positionClass: 'toast-bottom-right',
+    progressBar: true,
+    closeButton: true,
+  };
 
   export async function logOut() {
     try {

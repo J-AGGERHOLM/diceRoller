@@ -1,9 +1,15 @@
 <script>
-  // button handlers can be wired up later
+  import { onMount } from 'svelte';
+
   import logo from '../../assets/Icon.png';
   import { Link } from 'svelte-routing';
+  import { isAdmin, checkAdmin } from '../../stores/adminStore';
 
   export let onLogOut;
+
+  onMount(() => {
+    checkAdmin();
+  });
 </script>
 
 <nav class="navbar">
@@ -16,7 +22,9 @@
   </div>
   <div class="actions">
     <Link to="/overview">Overview</Link>
-    <Link to="/admin">Admin</Link>
+    {#if $isAdmin}
+      <Link to="/admin">Admin</Link>
+    {/if}
     <Link to="/" on:click={onLogOut}>Sign Out</Link>
   </div>
 </nav>
