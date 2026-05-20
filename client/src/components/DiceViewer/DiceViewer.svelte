@@ -2,9 +2,11 @@
   import DiceBox from '@3d-dice/dice-box';
   import { onMount } from 'svelte';
   import { selectedDice, clearDice } from '../../stores/selectedDieStore';
-
+  import { socket } from '../../stores/socketStore';
   let diceBox;
   let resultDisplay = $state('');
+
+  let messageInput = $derived(`Rolled a ${resultDisplay}`);
 
   onMount(async () => {
     diceBox = new DiceBox({
@@ -34,6 +36,10 @@
     return newArray.reduce((acc, number) => acc + number, 0);
   }
 
+  function rollResultToChat() {
+    socket.emit('client-sends-message', { data: messageInput });
+  }
+
   async function rollDce() {
     resultDisplay = '';
     if ($selectedDice.length === 0) return;
@@ -43,6 +49,7 @@
 
     const results = await diceBox.roll(parcedArray);
     resultDisplay = calculateResults(results);
+    rollResultToChat();
   }
 </script>
 

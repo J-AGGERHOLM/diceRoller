@@ -25,6 +25,9 @@ router.get("/characters/:characterid", async (req, res) => {
         [characterid]
     );
 
+    //for websocket:
+    req.session.characterName = response[0].name;
+
 
     res.send(response[0]);
 });

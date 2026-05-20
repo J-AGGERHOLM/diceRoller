@@ -1,0 +1,27 @@
+import { writable } from 'svelte/store';
+import { io } from 'socket.io-client';
+import { BASE_URL } from './storesConfig';
+import { messageList } from './messageList';
+import { currentMessage } from './currentMessage';
+
+function connectSocket() {
+  const socket = io(BASE_URL, {
+    withCredentials: true,
+  });
+
+  socket.on('server-sends-message', (data) => {
+    currentMessage.set(data.data);
+    messageList.update((messageList) => [
+      ...messageList,
+      {
+        characterName: data.characterName,
+        timeSubmitted: data.timeSubmitted,
+        message: data.data,
+      },
+    ]);
+  });
+
+  return socket;
+}
+
+export const socket = connectSocket();

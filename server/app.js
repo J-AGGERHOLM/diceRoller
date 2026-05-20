@@ -17,14 +17,14 @@ app.use(
 );
 
 import session from "express-session";
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
-  }),
-);
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+});
+
+app.use(sessionMiddleware);
 
 import { rateLimit } from "express-rate-limit";
 
@@ -56,6 +56,41 @@ app.use(authRouter);
 import characterRouter from "./routers/charactersRouter.js"
 app.use(characterRouter);
 
+//======== Web Socket ========//
+import http from "http";
+const server = http.createServer(app);
+
+import { Server } from "socket.io";
+//instantiating new server
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+  },
+});
+
+io.engine.use(sessionMiddleware);
+
+io.on("connection", (socket) => {
+  console.log("a new socket connected with the id", socket.id);
+
+  socket.on("client-sends-message", (data) => {
+    const session = socket.request.session;
+    
+    session.timeSubmitted = (session.timeSubmitted || 0) + 1
+    session.save();
+
+    data.characterName = session.characterName;
+    data.timeSubmitted = session.timeSubmitted;
+
+    io.emit("server-sends-message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A socket disconnected", socket.id);
+  });
+});
+
 
 
 
@@ -75,6 +110,6 @@ app.all("/{*splat}", (req, res) => {
 
 const PORT = process.env.PORT ?? 8080;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Server is running on port", PORT);
 });

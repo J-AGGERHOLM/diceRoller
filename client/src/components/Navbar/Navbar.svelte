@@ -15,13 +15,9 @@
     </div>
   </div>
   <div class="actions">
-    <Link to="/">Log-in</Link>
     <Link to="/overview">Overview</Link>
-    <Link to="/dicePage">Dice Page</Link>
     <Link to="/admin">Admin</Link>
-    <Link to="/" on:click={onLogOut}>Log-out</Link>
-
-    <button class="btn red">Sign Out</button>
+    <Link to="/" on:click={onLogOut}>Sign Out</Link>
   </div>
 </nav>
 
@@ -67,18 +63,5 @@
   .actions {
     display: flex;
     gap: 10px;
-  }
-
-  .btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    color: white;
-  }
-
-  .red {
-    background-color: #ef4444;
   }
 </style>
