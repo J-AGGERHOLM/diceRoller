@@ -33,12 +33,21 @@
 </script>
 
 <Router>
-  <Navbar onLogOut={logOut}></Navbar>
-
   <div>
-    <Route path="/"><LogInPage /></Route>
-    <Route path="/overview"><Overview /></Route>
-    <Route path="/dicePage"><DicePage></DicePage></Route>
-    <Route path="/admin"><Admin /></Route>
+    <Route path="/">
+      <LogInPage /></Route
+    >
+    <Route path="/overview">
+      <Navbar onLogOut={logOut}></Navbar>
+      <Overview /></Route
+    >
+    <Route path="/dicePage">
+      <Navbar onLogOut={logOut}></Navbar>
+      <DicePage></DicePage></Route
+    >
+    <Route path="/admin">
+      <Navbar onLogOut={logOut}></Navbar>
+      <Admin /></Route
+    >
   </div>
 </Router>

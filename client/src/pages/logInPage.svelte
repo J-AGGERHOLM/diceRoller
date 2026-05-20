@@ -15,6 +15,9 @@
 </div>
 
 <style>
+  nav {
+    display: none;
+  }
   .login-page {
     height: 100vh;
     width: auto;
