@@ -55,7 +55,7 @@ router.put("/characters/:characterid", async (req, res) => {
         WHERE id = ?`,
     [name, level, race, class_name, str_score, dex_score, con_score, int_score, wis_score, cha_score, characterid])
 
-    res.send({ data: `${name} has been updated`})
+    res.send({ data: `${name} has been updated` })
 });
 
 //delete character:

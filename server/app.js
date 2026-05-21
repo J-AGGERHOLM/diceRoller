@@ -56,6 +56,9 @@ app.use(authRouter);
 import characterRouter from "./routers/charactersRouter.js"
 app.use(characterRouter);
 
+import userRouter from "./routers/userRouter.js"
+app.use(userRouter);
+
 //======== Web Socket ========//
 import http from "http";
 const server = http.createServer(app);
