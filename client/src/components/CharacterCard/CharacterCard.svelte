@@ -1,7 +1,7 @@
 <script>
   import { fetchDelete, fetchGet } from '../../util/fetchUtil';
   import { character as characterStore } from '../../stores/characterStore';
-  import { Link } from 'svelte-routing';
+  import { Link, navigate } from 'svelte-routing';
 
   export let character = {
     name: 'name',
@@ -46,7 +46,7 @@
   .character-card {
     width: 23.1vw;
     height: 20vh;
-    background-color: rgba(12, 4, 19, 0.438);
+    background-color: rgba(12, 4, 19, 0.192);
     color: aliceblue;
     border-radius: 6px;
     padding: 6px;

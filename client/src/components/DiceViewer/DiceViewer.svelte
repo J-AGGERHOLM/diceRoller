@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { selectedDice, clearDice } from '../../stores/selectedDieStore';
   import { socket } from '../../stores/socketStore';
+  import { character } from '../../stores/characterStore';
   let diceBox;
   let resultDisplay = $state('');
 
@@ -37,7 +38,7 @@
   }
 
   function rollResultToChat() {
-    socket.emit('client-sends-message', { data: messageInput });
+    socket.emit('client-sends-message', { message: messageInput, characterName: $character.name });
   }
 
   async function rollDce() {
@@ -57,8 +58,8 @@
   <h4 class="result-display">{resultDisplay}</h4>
   <div id="dice-box" class="dice-box"></div>
   <div class="button-row">
-    <button class="roll-btn" on:click={rollDce}>ROLL</button>
-    <button class="clear-dice" on:click={clearDice}>Clear Dice</button>
+    <button class="roll-btn" onclick={rollDce}>ROLL</button>
+    <button class="clear-dice" onclick={clearDice}>Clear Dice</button>
   </div>
 </div>
 

@@ -59,7 +59,7 @@ app.use(characterRouter);
 import userRouter from "./routers/userRouter.js"
 app.use(userRouter);
 
-//======== Web Socket ========//
+//======== Web Socket 
 import http from "http";
 const server = http.createServer(app);
 
@@ -74,17 +74,21 @@ const io = new Server(server, {
 
 io.engine.use(sessionMiddleware);
 
+function getTimeStamp() {
+  const date = new Date();
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return `${hours}:${minutes}`
+}
+
 io.on("connection", (socket) => {
   console.log("a new socket connected with the id", socket.id);
 
   socket.on("client-sends-message", (data) => {
-    const session = socket.request.session;
-    
-    session.timeSubmitted = (session.timeSubmitted || 0) + 1
-    session.save();
 
-    data.characterName = session.characterName;
-    data.timeSubmitted = session.timeSubmitted;
+    data.timeSubmitted = getTimeStamp();
 
     io.emit("server-sends-message", data);
   });

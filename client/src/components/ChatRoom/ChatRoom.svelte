@@ -1,13 +1,12 @@
 <script>
-import { messageList } from '../../stores/messageList';
-import { socket } from '../../stores/socketStore';
-
+  import { messageList } from '../../stores/messageList';
+  import { character } from '../../stores/characterStore';
+  import { socket } from '../../stores/socketStore';
 
   let messageInput = '';
 
-
   function submitMessage() {
-    socket.emit('client-sends-message', { data: messageInput });
+    socket.emit('client-sends-message', { message: messageInput, characterName: $character.name });
     messageInput = '';
   }
 </script>
@@ -40,6 +39,7 @@ import { socket } from '../../stores/socketStore';
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-height: 85vh;
     min-height: 0;
     gap: 8px;
     overflow: hidden;
@@ -94,10 +94,13 @@ import { socket } from '../../stores/socketStore';
 
   .timestamp {
     color: #c4c4c4;
+    font-size: small;
   }
 
   .user-message-value {
-    justify-content: center;
+    text-align: start;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .submit-btn {

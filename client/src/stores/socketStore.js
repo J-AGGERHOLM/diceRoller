@@ -10,13 +10,14 @@ function connectSocket() {
   });
 
   socket.on('server-sends-message', (data) => {
+    console.log(data);
     currentMessage.set(data.data);
     messageList.update((messageList) => [
       ...messageList,
       {
         characterName: data.characterName,
         timeSubmitted: data.timeSubmitted,
-        message: data.data,
+        message: data.message,
       },
     ]);
   });
